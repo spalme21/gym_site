@@ -39,3 +39,15 @@ class ClassSession(models.Model):
     class_type = models.ForeignKey(ClassType, on_delete=models.PROTECT)
     date_and_time = models.DateTimeField(default=timezone.now)
     roster = models.ManyToManyField(Client)
+
+    class Meta:
+        ordering = ["-date_and_time"]
+
+    def __str__(self):
+        """String to represent a specific session of a class."""
+        return f"{self.class_type}: {self.date_and_time}"
+
+    def get_absolut_url(self):
+        """Returns the URL to access a specific session of a class."""
+        return reverse("classsession-detail-view", args=[str(self.id)])
+    
