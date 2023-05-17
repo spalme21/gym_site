@@ -50,4 +50,3 @@ class ClassSession(models.Model):
     def get_absolut_url(self):
         """Returns the URL to access a specific session of a class."""
         return reverse("classsession-detail-view", args=[str(self.id)])
-    
