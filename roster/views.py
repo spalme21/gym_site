@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.shortcuts import render
 
@@ -11,6 +11,10 @@ def home(request):
 
 class ClientListView(ListView):
     """Generic view for a list of clients."""
+    model = Client
+
+class ClientDetailView(DetailView):
+    """Generic view to view details about a client."""
     model = Client
 
 class ClientCreateView(CreateView):
