@@ -13,6 +13,7 @@ def home(request):
 class ClientListView(LoginRequiredMixin, ListView):
     """Generic view for a list of clients."""
     model = Client
+    paginate_by = 20
 
 class ClientDetailView(LoginRequiredMixin, DetailView):
     """Generic view to view details about a client."""
