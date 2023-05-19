@@ -8,7 +8,7 @@ from .models import Client
 
 def home(request):
     """View function for the home page."""
-    return render(request, "home.html")
+    return render(request, "roster/home.html")
 
 class ClientListView(LoginRequiredMixin, ListView):
     """Generic view for a list of clients."""

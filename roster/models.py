@@ -7,7 +7,7 @@ class Client(models.Model):
     last_name = models.CharField(max_length=32, help_text="Enter the last name")
     first_name = models.CharField(max_length=32, help_text="Enter the first name")
     email = models.EmailField(max_length=254, help_text="Enter the email")
-    credits = models.IntegerField()
+    credits = models.IntegerField(default=0)
 
     def __str__(self):
         """String to represent the Client object"""
