@@ -1,10 +1,13 @@
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
+from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from .models import Client
+from .forms import ChangeCreditsForm
 
 def home(request):
     """View function for the home page."""
@@ -33,3 +36,27 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
     """Generic view to delete a client."""
     model = Client
     success_url = reverse_lazy("client-list")
+
+@login_required
+def add_credits(request, pk):
+    """View function to add credits to a client."""
+    client = get_object_or_404(Client, pk=pk)
+
+    if request.method == "POST":
+        form = ChangeCreditsForm(request.POST)
+
+        if form.is_valid():
+            client.credits += form.cleaned_data["credits_added"]
+            client.save()
+
+            return HttpResponseRedirect(reverse(client.get_absolute_url()))
+
+    else:
+        form = ChangeCreditsForm()
+
+    context = {
+        "form": form,
+        "client": client,
+    }
+
+    return render(request, "client_add_credits.html", context)
