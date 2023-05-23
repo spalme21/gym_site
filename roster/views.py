@@ -1,13 +1,14 @@
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.edit import (CreateView, DeleteView, UpdateView,
+                                       FormView)
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
-from .models import Client
-from .forms import ChangeCreditsForm
+from .models import Client, ClassSession
+from .forms import ChangeCreditsModelForm
 
 def home(request):
     """View function for the home page."""
@@ -43,7 +44,7 @@ def add_credits(request, pk):
     client = get_object_or_404(Client, pk=pk)
 
     if request.method == "POST":
-        form = ChangeCreditsForm(request.POST)
+        form = ChangeCreditsModelForm(request.POST)
 
         if form.is_valid():
             client.credits += form.cleaned_data["credits_added"]
@@ -52,7 +53,7 @@ def add_credits(request, pk):
             return HttpResponseRedirect(reverse(client.get_absolute_url()))
 
     else:
-        form = ChangeCreditsForm()
+        form = ChangeCreditsModelForm(initial={"credits": 0})
 
     context = {
         "form": form,
@@ -60,3 +61,8 @@ def add_credits(request, pk):
     }
 
     return render(request, "client_add_credits.html", context)
+
+class ClassSessionFormView(LoginRequiredMixin, FormView):
+    """Generic view for a form to schedule a class."""
+    model = ClassSession
+    fields = ["class_type", "date_and_time", "roster"]

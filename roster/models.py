@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 
@@ -37,6 +38,7 @@ class ClassType(models.Model):
 class ClassSession(models.Model):
     """Model representing a specific session of a class."""
     class_type = models.ForeignKey(ClassType, on_delete=models.PROTECT)
+    trainer = models.ForeignKey(User, on_delete=models.PROTECT)
     date_and_time = models.DateTimeField(default=timezone.now)
     roster = models.ManyToManyField(Client)
 
@@ -47,6 +49,6 @@ class ClassSession(models.Model):
         """String to represent a specific session of a class."""
         return f"{self.class_type}: {self.date_and_time}"
 
-    def get_absolut_url(self):
+    def get_absolute_url(self):
         """Returns the URL to access a specific session of a class."""
         return reverse("classsession-detail-view", args=[str(self.id)])
