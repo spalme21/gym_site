@@ -1,2 +1,4 @@
 __pycache__/
 roster/__pycache__
+db.sqlite3
+roster/__pycache__/views.cpython-38.pyc
