@@ -11,6 +11,8 @@ class ChangeCreditsModelForm(ModelForm):
 
         if data < 0:
             raise ValidationError("Invalid amount - must not be less than zero")
+        
+        return data
 
     class Meta:
         model = Client

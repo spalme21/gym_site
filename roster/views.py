@@ -47,10 +47,10 @@ def add_credits(request, pk):
         form = ChangeCreditsModelForm(request.POST)
 
         if form.is_valid():
-            client.credits += form.cleaned_data["credits_added"]
+            client.credits += form.cleaned_data["credits"]
             client.save()
 
-            return HttpResponseRedirect(reverse(client.get_absolute_url()))
+            return HttpResponseRedirect(client.get_absolute_url())
 
     else:
         form = ChangeCreditsModelForm(initial={"credits": 0})
@@ -60,7 +60,7 @@ def add_credits(request, pk):
         "client": client,
     }
 
-    return render(request, "client_add_credits.html", context)
+    return render(request, "roster/client_add_credits.html", context)
 
 class ClassSessionFormView(LoginRequiredMixin, FormView):
     """Generic view for a form to schedule a class."""
